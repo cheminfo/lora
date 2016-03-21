@@ -1,0 +1,27 @@
+#!/bin/bash
+
+## We just log the output for 10s
+
+timeout 20 cat < /dev/ttyAMA0 &
+
+stty -F /dev/ttyAMA0 57600
+
+for SYS in ver vdd hweui; do
+	echo -ne "sys get $SYS\r\n" > /dev/ttyAMA0
+	printf "sys %10s: " "$SYS"
+	sleep 0.3;
+done
+
+for MAC in devaddr deveui appeui dr band pwridx adr retx rxdelay1 rxdelay2 ar dcycleps mrgn gwnb status; do
+	echo -ne "mac get $MAC\r\n" > /dev/ttyAMA0 
+	printf "mac %10s: " "$MAC"
+	sleep 0.3;
+done
+
+for RADIO in bt mod freq pwr sf afcbw rxbw bitrate fdev prlen crc iqi cr wdt bw snr; do
+	echo -ne "radio get $RADIO\r\n" > /dev/ttyAMA0
+	printf "radio %10s: " "$RADIO"
+	sleep 0.3;
+done
+
+wait

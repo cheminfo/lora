@@ -1,0 +1,30 @@
+#!/bin/bash
+
+
+
+if [ -z "$1" ]; then
+	echo "You need to specify the devaddr in hexadecimal"
+	echo "Example: loraInit 1234ABCD"
+	echo "Check the page: http://thethingsnetwork.org/wiki/AddressSpace"
+	exit
+fi
+
+## We just log the output for 10s
+
+timeout 10 cat < /dev/ttyAMA0 &
+
+stty -F /dev/ttyAMA0 57600
+echo -ne "mac set nwkskey 2B7E151628AED2A6ABF7158809CF4F3C\r\n" | tee /dev/ttyAMA0
+sleep 1;
+echo -ne "mac set appskey 2B7E151628AED2A6ABF7158809CF4F3C\r\n" | tee /dev/ttyAMA0
+sleep 1;
+echo -ne "mac set adr on\r\n" | tee /dev/ttyAMA0
+sleep 1;
+echo -ne "mac set linkchk 300\r\n" | tee /dev/ttyAMA0
+sleep 1;
+echo -ne "mac set devaddr $1\r\n" | tee /dev/ttyAMA0
+sleep 1;
+echo -ne "mac save\r\n" | tee /dev/ttyAMA0
+sleep 1;
+
+wait

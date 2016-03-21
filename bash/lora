@@ -1,0 +1,14 @@
+#!/bin/bash
+
+## We just log the output for 10s
+
+timeout 10 cat < /dev/ttyAMA0 &
+
+MESSAGE=`echo -n "$@" | od -A n -t x1 | tr -d ' \r\n' `
+
+stty -F /dev/ttyAMA0 57600
+echo -ne "mac join abp\r\n" | tee /dev/ttyAMA0
+sleep 1;
+echo -ne "mac tx uncnf 1 $MESSAGE\r\n" | tee /dev/ttyAMA0
+
+wait
