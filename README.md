@@ -23,3 +23,8 @@ You need to append the address of your device that you should first register on:
 Retrieve most of the parameters from the RN2483
 
 `> loraInfo`
+
+## Connecting RN2483 to the RPi2
+
+We need to connect 3.3V, RX, TX, GND and the RESET (see picture).
+
